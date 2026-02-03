@@ -1,13 +1,13 @@
 import * as vscode from 'vscode';
-import { exec } from 'child_process';
-import { promisify } from 'util';
+import {exec} from 'child_process';
+import {promisify} from 'util';
 import * as path from 'path';
-import defaultDictionary, { NormDictionary } from './dictionary/NormDictionary';
-import { NormSeverity } from './dictionary/NormSeverity';
+import defaultDictionary, {NormDictionary} from './dictionary/NormDictionary';
+import {NormSeverity} from './dictionary/NormSeverity';
+import {NormRangeType} from "./dictionary/NormRange";
 
 const execAsync = promisify(exec);
 
-let warningDecorationType: vscode.TextEditorDecorationType;
 let checkInterval: NodeJS.Timeout | undefined;
 let extensionPath: string;
 let normDictionary: NormDictionary;
@@ -18,14 +18,6 @@ export function activate(context: vscode.ExtensionContext) {
 
     const diagnosticCollection = vscode.languages.createDiagnosticCollection('norminette');
     context.subscriptions.push(diagnosticCollection);
-
-    warningDecorationType = vscode.window.createTextEditorDecorationType({
-        textDecoration: 'underline wavy',
-        dark: { borderColor: '#ff1fb9' },
-        light: { borderColor: '#770c7e' },
-        borderWidth: '0 0 2px 0',
-        borderStyle: 'wavy'
-    });
 
     context.subscriptions.push(
         vscode.workspace.onDidOpenTextDocument(doc => checkDocument(doc, diagnosticCollection))
@@ -38,7 +30,7 @@ export function activate(context: vscode.ExtensionContext) {
     context.subscriptions.push(
         vscode.window.onDidChangeActiveTextEditor(editor => {
             if (editor) {
-                checkDocument(editor.document, diagnosticCollection);
+                checkDocument(editor.document, diagnosticCollection).then();
             }
         })
     );
@@ -46,7 +38,7 @@ export function activate(context: vscode.ExtensionContext) {
     checkInterval = setInterval(() => {
         const editor = vscode.window.activeTextEditor;
         if (editor) {
-            checkDocument(editor.document, diagnosticCollection);
+            checkDocument(editor.document, diagnosticCollection).then();
         }
     }, 3000);
 
@@ -77,51 +69,69 @@ async function checkDocument(document: vscode.TextDocument, collection: vscode.D
 }
 
 function parseNorminette(output: string, document: vscode.TextDocument): vscode.Diagnostic[] {
-    const diagnostics: vscode.Diagnostic[] = [];
-    const decorations: vscode.DecorationOptions[] = [];
 
+    const diagnostics: vscode.Diagnostic[] = [];
     const errorRegex = /^(Error|Notice):\s+(\w+)\s+\(line:\s+(\d+),\s+col:\s+(\d+)\)/gm;
 
     let match;
     while ((match = errorRegex.exec(output)) !== null) {
+
         const [, , errorCode, lineStr, colStr] = match;
         const line = parseInt(lineStr) - 1;
         const col = parseInt(colStr) - 1;
 
-        // Look up error in dictionary
         const entry = normDictionary.data.find(e => e.errorCode === errorCode);
 
         if (!entry) {
-            // Fallback if not in dictionary
-            const range = new vscode.Range(line, col, line, col + 10);
-            const diagnostic = new vscode.Diagnostic(
-                range,
-                errorCode,
-                vscode.DiagnosticSeverity.Warning
-            );
-            diagnostic.source = 'norminette';
-            diagnostics.push(diagnostic);
-            decorations.push({ range });
             continue;
         }
 
-        // Calculate range based on dictionary entry
-        let startCol: number, endCol: number;
-        const rangeValue = entry.range || 10;
+        let startCol: number = col;
+        let endCol: number = col;
 
-        if (rangeValue >= 0) {
-            // Positive: origin to origin + range
-            startCol = col;
-            endCol = col + rangeValue;
-        } else {
-            // Negative: (origin + range) to origin
-            startCol = col + rangeValue;
-            endCol = col + 1;
+        if (entry.range) {
+
+            if (entry.range.type === NormRangeType.NUMERIC) {
+
+                startCol = col + (entry.range.start ?? 0);
+                endCol = col + (entry.range.end ?? 0);
+
+            } else if (entry.range.type === NormRangeType.DELIMITER) {
+
+                const lineText = document.lineAt(line).text;
+
+                if (entry.range.startDelimiters && entry.range.startDelimiters.length > 0) {
+                    startCol = col;
+                    if (entry.range.invertStartDelimiters) {
+                        while (startCol > 0 && entry.range.startDelimiters.includes(lineText[startCol - 1])) {
+                            startCol--;
+                        }
+                    } else {
+                        while (startCol > 0 && !entry.range.startDelimiters.includes(lineText[startCol - 1])) {
+                            startCol--;
+                        }
+                    }
+                }
+
+                if (entry.range.endDelimiters && entry.range.endDelimiters.length > 0) {
+                    endCol = col;
+                    if (entry.range.invertEndDelimiters) {
+                        while (endCol < lineText.length && entry.range.endDelimiters.includes(lineText[endCol])) {
+                            endCol++;
+                        }
+                    } else {
+                        while (endCol < lineText.length && !entry.range.endDelimiters.includes(lineText[endCol])) {
+                            endCol++;
+                        }
+                    }
+                }
+
+            }
+
         }
 
         const range = new vscode.Range(line, Math.max(0, startCol), line, Math.max(0, endCol));
 
-        // Map NormSeverity to VS Code severity
         let vscodeSeverity: vscode.DiagnosticSeverity;
         switch (entry.severity) {
             case NormSeverity.Error:
@@ -140,24 +150,16 @@ function parseNorminette(output: string, document: vscode.TextDocument): vscode.
             `${entry.errorMessage}`,
             vscodeSeverity
         );
+
         diagnostic.source = 'norminette';
         diagnostics.push(diagnostic);
 
-        decorations.push({ range });
-    }
-
-    const editor = vscode.window.activeTextEditor;
-    if (editor && editor.document.uri.toString() === document.uri.toString()) {
-        editor.setDecorations(warningDecorationType, decorations);
     }
 
     return diagnostics;
 }
 
 export function deactivate() {
-    if (warningDecorationType) {
-        warningDecorationType.dispose();
-    }
     if (checkInterval) {
         clearInterval(checkInterval);
     }
