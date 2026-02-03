@@ -13,6 +13,7 @@ let extensionPath: string;
 let normDictionary: NormDictionary;
 
 export function activate(context: vscode.ExtensionContext) {
+
     extensionPath = context.extensionPath;
     normDictionary = defaultDictionary();
 
@@ -78,7 +79,19 @@ function parseNorminette(output: string, document: vscode.TextDocument): vscode.
 
         const [, , errorCode, lineStr, colStr] = match;
         const line = parseInt(lineStr) - 1;
-        const col = parseInt(colStr) - 1;
+        const norminetteCol = parseInt(colStr) - 1;
+
+        const lineText = document.lineAt(line).text;
+        let visualCol = 0;
+        let col = 0;
+        while (visualCol < norminetteCol && col < lineText.length) {
+            if (lineText[col] === '\t') {
+                visualCol += 4;
+            } else {
+                visualCol++;
+            }
+            col++;
+        }
 
         const entry = normDictionary.data.find(e => e.errorCode === errorCode);
 
