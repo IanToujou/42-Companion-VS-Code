@@ -117,7 +117,7 @@ export default function defaultDictionary(): NormDictionary {
                 range: {
                     type: NormRangeType.DELIMITER,
                     startDelimiters: ["\t", " "],
-                    endDelimiters: ["\n"]
+                    endDelimiters: [";", "(", "{", "\n"]
                 }
             },
             {

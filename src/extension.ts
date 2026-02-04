@@ -2,7 +2,6 @@ import * as vscode from 'vscode';
 import {DiagnosticSeverity} from 'vscode';
 import {exec} from 'child_process';
 import {promisify} from 'util';
-import * as path from 'path';
 import defaultDictionary, {NormDictionary} from './dictionary/NormDictionary';
 import {NormSeverity} from './dictionary/NormSeverity';
 import {NormRangeType} from "./dictionary/NormRange";
@@ -57,8 +56,7 @@ async function checkDocument(document: vscode.TextDocument, collection: vscode.D
     }
 
     try {
-        const norminettePath = path.join(extensionPath, 'bin', 'norminette');
-        const { stdout, stderr } = await execAsync(`python3 ${norminettePath} ${document.fileName}`);
+        const { stdout, stderr } = await execAsync(`host-spawn norminette ${document.uri.fsPath}`);
         const diagnostics = parseNorminette(stdout + stderr, document);
         collection.set(document.uri, diagnostics);
     } catch (error: any) {
@@ -98,12 +96,11 @@ function parseNorminette(output: string, document: vscode.TextDocument): vscode.
             const range = new vscode.Range(line, Math.max(0, col), line, Math.max(0, col));
             const diagnostic = new vscode.Diagnostic(
                 range,
-                `${errorCode}`,
+                `REPORT MISSING ERROR: ${errorCode}`,
                 DiagnosticSeverity.Warning
             );
             diagnostic.source = '42 Companion: Norm Error';
             diagnostics.push(diagnostic);
-            console.log(`Unknown norm error code: ${errorCode}`);
             continue;
         }
 
