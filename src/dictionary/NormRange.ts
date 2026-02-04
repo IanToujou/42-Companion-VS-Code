@@ -1,6 +1,7 @@
 export enum NormRangeType {
     NUMERIC,
-    DELIMITER
+    DELIMITER,
+    LINE
 }
 
 /**

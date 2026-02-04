@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import {DiagnosticSeverity} from 'vscode';
 import {exec} from 'child_process';
 import {promisify} from 'util';
 import * as path from 'path';
@@ -81,22 +82,41 @@ function parseNorminette(output: string, document: vscode.TextDocument): vscode.
         const line = parseInt(lineStr) - 1;
         const norminetteCol = parseInt(colStr) - 1;
 
+        const entry = normDictionary.data.find(e => e.errorCode === errorCode);
+        if (!entry) {
+            const lineText = document.lineAt(line).text;
+            let visualCol = 0;
+            let col = 0;
+            while (visualCol < norminetteCol && col < lineText.length) {
+                if (lineText[col] === '\t') {
+                    visualCol = Math.floor(visualCol / 4) * 4 + 4;
+                } else {
+                    visualCol++;
+                }
+                col++;
+            }
+            const range = new vscode.Range(line, Math.max(0, col), line, Math.max(0, col));
+            const diagnostic = new vscode.Diagnostic(
+                range,
+                `${errorCode}`,
+                DiagnosticSeverity.Warning
+            );
+            diagnostic.source = '42 Companion: Norm Error';
+            diagnostics.push(diagnostic);
+            console.log(`Unknown norm error code: ${errorCode}`);
+            continue;
+        }
+
         const lineText = document.lineAt(line).text;
         let visualCol = 0;
         let col = 0;
         while (visualCol < norminetteCol && col < lineText.length) {
             if (lineText[col] === '\t') {
-                visualCol += 4;
+                visualCol = Math.floor(visualCol / 4) * 4 + 4;
             } else {
                 visualCol++;
             }
             col++;
-        }
-
-        const entry = normDictionary.data.find(e => e.errorCode === errorCode);
-
-        if (!entry) {
-            continue;
         }
 
         let startCol: number = col;
@@ -139,6 +159,15 @@ function parseNorminette(output: string, document: vscode.TextDocument): vscode.
                     }
                 }
 
+            } else if (entry.range.type === NormRangeType.LINE) {
+
+                const lineText = document.lineAt(line).text;
+                const trimmedLine = lineText.trim();
+                const trimStart = lineText.indexOf(trimmedLine);
+
+                startCol = trimStart;
+                endCol = trimStart + trimmedLine.length;
+
             }
 
         }
@@ -164,7 +193,7 @@ function parseNorminette(output: string, document: vscode.TextDocument): vscode.
             vscodeSeverity
         );
 
-        diagnostic.source = 'norminette';
+        diagnostic.source = '42 Companion: Norm Error';
         diagnostics.push(diagnostic);
 
     }
