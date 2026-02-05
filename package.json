@@ -5,6 +5,7 @@
   "description": "The ultimate companion for 42 schools! Supports norminette, code hints, and more.",
   "version": "0.0.1",
   "repository": "https://github.com/IanToujou/42-Companion-VS-Code",
+  "icon": "images/icon.png",
   "engines": {
     "vscode": "^1.107.1"
   },
