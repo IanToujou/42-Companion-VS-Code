@@ -536,6 +536,64 @@ export default function defaultDictionary(): NormDictionary {
                     startDelimiters: [" ", "}", ";", ",", "\t"],
                     endDelimiters: [" ", ";"]
                 }
+            },
+            {
+                severity: NormSeverity.Error,
+                errorCode: "ENUM_TYPE_NAMING",
+                errorMessage: "Enums must start with an e_ prefix.",
+                range: {
+                    type: NormRangeType.DELIMITER,
+                    startDelimiters: [" ", "}", ";", ",", "\t"],
+                    endDelimiters: [" ", ";"]
+                }
+            },
+            {
+                severity: NormSeverity.Error,
+                errorCode: "UNION_TYPE_NAMING",
+                errorMessage: "Unions must start with a u_ prefix.",
+                range: {
+                    type: NormRangeType.DELIMITER,
+                    startDelimiters: [" ", "}", ";", ",", "\t"],
+                    endDelimiters: [" ", ";"]
+                }
+            },
+            {
+                severity: NormSeverity.Error,
+                errorCode: "GLOBAL_VAR_NAMING",
+                errorMessage: "Global variables must start with a g_ prefix.",
+                range: {
+                    type: NormRangeType.DELIMITER,
+                    startDelimiters: [" ", "}", ";", ",", "\t"],
+                    endDelimiters: [" ", ";"]
+                }
+            },
+            {
+                severity: NormSeverity.Info,
+                errorCode: "GLOBAL_VAR_DETECTED",
+                errorMessage: "Global variable detected. Make sure it is a reasonable choice.",
+                range: {
+                    type: NormRangeType.DELIMITER,
+                    startDelimiters: [" ", "\t"],
+                    endDelimiters: [" ", "\t", ",", ";"]
+                }
+            },
+            {
+                severity: NormSeverity.Error,
+                errorCode: "Macro name must be capitalized",
+                errorMessage: "Macro statements must be in uppercase.",
+                range: {
+                    type: NormRangeType.DELIMITER,
+                    startDelimiters: [" ", "\t"],
+                    endDelimiters: [" ", "\t"]
+                }
+            },
+            {
+                severity: NormSeverity.Error,
+                errorCode: "MACRO_FUNC_FORBIDDEN",
+                errorMessage: "Macro statements cannot contain a function.",
+                range: {
+                    type: NormRangeType.LINE
+                }
             }
         ]
     };
