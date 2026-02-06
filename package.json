@@ -1,10 +1,11 @@
 {
   "name": "42-companion",
-  "publisher": "toujou-studios",
+  "publisher": "ToujouStudios",
   "displayName": "42 Companion",
   "description": "The ultimate companion for 42 schools! Supports norminette, code hints, and more.",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "repository": "https://github.com/IanToujou/42-Companion-VS-Code",
+  "pricing": "Free",
   "icon": "images/icon.png",
   "engines": {
     "vscode": "^1.107.1"

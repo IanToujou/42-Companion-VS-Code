@@ -11,11 +11,13 @@ const execAsync = promisify(exec);
 let checkInterval: NodeJS.Timeout | undefined;
 let extensionPath: string;
 let normDictionary: NormDictionary;
+let fallback: boolean;
 
 export function activate(context: vscode.ExtensionContext) {
 
     extensionPath = context.extensionPath;
     normDictionary = defaultDictionary();
+    fallback = false;
 
     const diagnosticCollection = vscode.languages.createDiagnosticCollection('norminette');
     context.subscriptions.push(diagnosticCollection);
@@ -55,12 +57,20 @@ async function checkDocument(document: vscode.TextDocument, collection: vscode.D
         return;
     }
 
+    let cmd: string = `norminette ${document.uri.fsPath}`;
+    if (fallback) {
+        cmd = `host-spawn norminette ${document.uri.fsPath}`;
+    }
+
     try {
-        const { stdout, stderr } = await execAsync(`host-spawn norminette ${document.uri.fsPath}`);
+        const { stdout, stderr } = await execAsync(cmd);
         const diagnostics = parseNorminette(stdout + stderr, document);
         collection.set(document.uri, diagnostics);
     } catch (error: any) {
         console.log(error);
+        if (!fallback && error.stderr.includes('norminette: command not found')) {
+            fallback = true;
+        }
         if (error.stdout) {
             const diagnostics = parseNorminette(error.stdout, document);
             collection.set(document.uri, diagnostics);
