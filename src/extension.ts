@@ -206,6 +206,7 @@ function parseNorminette(output: string, document: vscode.TextDocument): vscode.
     }
 
     return diagnostics;
+
 }
 
 export function deactivate() {

@@ -494,7 +494,7 @@ export default function defaultDictionary(): NormDictionary {
             {
                 severity: NormSeverity.Error,
                 errorCode: "PREPROC_BAD_INDENT",
-                errorMessage: "Preprocessor directives must have a space after the # symbol.",
+                errorMessage: "Preprocessor directives must be properly aligned with spaces after the # symbol.",
                 range: {
                     type: NormRangeType.NUMERIC,
                     start: 0,
@@ -593,6 +593,74 @@ export default function defaultDictionary(): NormDictionary {
                 errorMessage: "Macro statements cannot contain a function.",
                 range: {
                     type: NormRangeType.LINE
+                }
+            },
+            {
+                severity: NormSeverity.Error,
+                errorCode: "MISSING_TYPEDEF_ID",
+                errorMessage: "Type definitions need an id or name.",
+                range: {
+                    type: NormRangeType.LINE
+                }
+            },
+            {
+                severity: NormSeverity.Error,
+                errorCode: "NL_AFTER_PREPROC",
+                errorMessage: "A newline is required after preprocessor statements.",
+                range: {
+                    type: NormRangeType.NUMERIC,
+                    start: 0,
+                    end: 1,
+                }
+            },
+            {
+                severity: NormSeverity.Error,
+                errorCode: "NL_AFTER_VAR_DECL",
+                errorMessage: "A newline is required after variable declarations.",
+                range: {
+                    type: NormRangeType.NUMERIC,
+                    start: 0,
+                    end: 1,
+                }
+            },
+            {
+                severity: NormSeverity.Error,
+                errorCode: "PREPROC_CONSTANT",
+                errorMessage: "Preprocessor statements must only contain constant defines.",
+                range: {
+                    type: NormRangeType.DELIMITER,
+                    startDelimiters: [" ", "\t"],
+                    endDelimiters: [" ", "\t", "(", ";"]
+                }
+            },
+            {
+                severity: NormSeverity.Error,
+                errorCode: "MISALIGNED_FUNC_DECL",
+                errorMessage: "The function declaration is not aligned properly.",
+                range: {
+                    type: NormRangeType.DELIMITER,
+                    startDelimiters: ["\t", " "],
+                    endDelimiters: ["\t", " ", "("],
+                }
+            },
+            {
+                severity: NormSeverity.Error,
+                errorCode: "TOO_MANY_WS",
+                errorMessage: "Too many whitespaces for this indent level.",
+                range: {
+                    type: NormRangeType.NUMERIC,
+                    start: 0,
+                    end: 1
+                }
+            },
+            {
+                severity: NormSeverity.Error,
+                errorCode: "TAB_REPLACE_SPACE",
+                errorMessage: "Spaces are required, but found tabs here.",
+                range: {
+                    type: NormRangeType.NUMERIC,
+                    start: 0,
+                    end: 1
                 }
             }
         ]
