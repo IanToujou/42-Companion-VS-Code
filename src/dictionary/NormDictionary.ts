@@ -579,8 +579,18 @@ export default function defaultDictionary(): NormDictionary {
             },
             {
                 severity: NormSeverity.Error,
-                errorCode: "Macro name must be capitalized",
+                errorCode: "MACRO_NAME_CAPITAL",
                 errorMessage: "Macro statements must be in uppercase.",
+                range: {
+                    type: NormRangeType.DELIMITER,
+                    startDelimiters: [" ", "\t"],
+                    endDelimiters: [" ", "\t"]
+                }
+            },
+            {
+                severity: NormSeverity.Error,
+                errorCode: "HEADER_PROT_UPPER",
+                errorMessage: "Header protection must be in uppercase.",
                 range: {
                     type: NormRangeType.DELIMITER,
                     startDelimiters: [" ", "\t"],
