@@ -480,6 +480,62 @@ export default function defaultDictionary(): NormDictionary {
                 range: {
                     type: NormRangeType.LINE
                 }
+            },
+            {
+                severity: NormSeverity.Error,
+                errorCode: "HEADER_PROT_NAME",
+                errorMessage: "Header protection names must be uppercase and end with _H.",
+                range: {
+                    type: NormRangeType.DELIMITER,
+                    startDelimiters: [" "],
+                    endDelimiters: [" "],
+                }
+            },
+            {
+                severity: NormSeverity.Error,
+                errorCode: "PREPROC_BAD_INDENT",
+                errorMessage: "Preprocessor directives must have a space after the # symbol.",
+                range: {
+                    type: NormRangeType.NUMERIC,
+                    start: 0,
+                    end: 1,
+                }
+            },
+            {
+                severity: NormSeverity.Error,
+                errorCode: "PREPROC_START_LINE",
+                errorMessage: "Preprocessor directives must be at the start of the line.",
+                range: {
+                    type: NormRangeType.LINE
+                }
+            },
+            {
+                severity: NormSeverity.Error,
+                errorCode: "HEADER_PROT_NODEF",
+                errorMessage: "Header protection names must be defined after #ifndef and before #endif.",
+                range: {
+                    type: NormRangeType.LINE
+                }
+            },
+            {
+                severity: NormSeverity.Error,
+                errorCode: "USER_DEFINED_TYPEDEF",
+                errorMessage: "Type definitions must start with a t_ prefix.",
+                range: {
+                    type: NormRangeType.DELIMITER,
+                    startDelimiters: [" ", "}", ";", ",", "\t"],
+                    endDelimiters: [" ", ";"]
+                }
+            },
+            {
+                severity: NormSeverity.Error,
+                errorCode: "STRUCT_TYPE_NAMING",
+                errorMessage: "Structs must start with a s_ prefix.",
+                range: {
+                    type: NormRangeType.DELIMITER,
+                    startDelimiters: [" ", "}", ";", ",", "\t"],
+                    endDelimiters: [" ", ";"]
+                }
             }
         ]
     };
