@@ -1,9 +1,12 @@
 # Change Log
 
-All notable changes to the "42-companion" extension will be documented in this file.
+All notable changed, including bugfixes, can be found here.
 
-Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
+## Release v1.0.1
 
-## [Unreleased]
+- Added support for Visual Studio Code as a flatpak.
+- Changed extension categories.
+
+## Release v1.0.0
 
 - Initial release
