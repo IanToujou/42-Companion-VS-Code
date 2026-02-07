@@ -53,8 +53,6 @@ async function checkDocument(document: vscode.TextDocument, collection: vscode.D
     }
 
     const fileKey = document.uri.fsPath;
-
-    // If a check is already running for this file, wait for it to complete
     if (runningChecks.has(fileKey)) {
         return runningChecks.get(fileKey);
     }
