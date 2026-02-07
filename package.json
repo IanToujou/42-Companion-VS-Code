@@ -1,9 +1,12 @@
 {
   "name": "42-companion",
-  "publisher": "Toujou Studios",
+  "publisher": "ToujouStudios",
   "displayName": "42 Companion",
-  "description": "The ultimate companion for 42 schools! Supports norminette, code hints, and more.",
-  "version": "0.0.1",
+  "description": "School 42 companion with norminette, headers, code hints, and more.",
+  "version": "1.0.0",
+  "repository": "https://github.com/IanToujou/42-Companion-VS-Code",
+  "pricing": "Free",
+  "icon": "images/icon.png",
   "engines": {
     "vscode": "^1.107.1"
   },
@@ -12,15 +15,13 @@
     "Visualization",
     "Linters"
   ],
-  "activationEvents": [],
+  "activationEvents": [
+    "onStartupFinished",
+    "onLanguage:c"
+  ],
   "main": "./out/extension.js",
   "contributes": {
-    "commands": [
-      {
-        "command": "42-companion.fixNorminette",
-        "title": "Fix Norminette Errors"
-      }
-    ]
+    "commands": []
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",

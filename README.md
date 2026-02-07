@@ -1,71 +1,23 @@
-# 42-companion README
+# 42 Companion
 
-This is the README for your extension "42-companion". After writing up a brief description, we recommend including the following sections.
+[![Release](https://img.shields.io/badge/-Release_1.0.0-blue?logo=github)](https://github.com/IanToujou/42-Companion-VS-Code)
+[![Support](https://img.shields.io/badge/-Support-teal?logo=github)](https://github.com/IanToujou/42-Companion-VS-Code)
+
+42 Companion is a Visual Studio Code extension that helps you manage your 42 projects. It supports intellisense and fixes for Norminette, Makefiles, headers and more!
+
+## Getting Started
+
+To get started, you can either download the extension from the [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=iantoujou.42-companion) or download one of the [Releases](https://github.com/IanToujou/42-Companion-VS-Code/releases).
 
 ## Features
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+### Norminette Intellisense
 
-For example if there is an image subfolder under your extension project workspace:
+Norminette intellisense helps you find norm errors in your code. It will highlight the errors for .c and .h files.
 
-\!\[feature X\]\(images/feature-x.png\)
+## Support
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+Please make sure to have read the documentation regarding your issue.
+If, however, you do have an issue or any question, you can always reach me via any linked social media account [on my profile](https://github.com/IanToujou).
 
-## Requirements
-
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
-
-## Extension Settings
-
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
-
-For example:
-
-This extension contributes the following settings:
-
-* `myExtension.enable`: Enable/disable this extension.
-* `myExtension.thing`: Set to `blah` to do something.
-
-## Known Issues
-
-Calling out known issues can help limit users opening duplicate issues against your extension.
-
-## Release Notes
-
-Users appreciate release notes as you update your extension.
-
-### 1.0.0
-
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
-
----
-
-## Following extension guidelines
-
-Ensure that you've read through the extensions guidelines and follow the best practices for creating your extension.
-
-* [Extension Guidelines](https://code.visualstudio.com/api/references/extension-guidelines)
-
-## Working with Markdown
-
-You can author your README using Visual Studio Code. Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux).
-* Toggle preview (`Shift+Cmd+V` on macOS or `Shift+Ctrl+V` on Windows and Linux).
-* Press `Ctrl+Space` (Windows, Linux, macOS) to see a list of Markdown snippets.
-
-## For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
+You can also open an issue on the GitHub repository.
