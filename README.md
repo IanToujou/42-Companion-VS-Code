@@ -1,3 +1,23 @@
 # 42 Companion
 
-Just a test
+[![Release](https://img.shields.io/badge/-Release_1.0.0-blue?logo=github)](https://github.com/IanToujou/42-Companion-VS-Code)
+[![Support](https://img.shields.io/badge/-Support-teal?logo=github)](https://github.com/IanToujou/42-Companion-VS-Code)
+
+42 Companion is a Visual Studio Code extension that helps you manage your 42 projects. It supports intellisense and fixes for Norminette, Makefiles, headers and more!
+
+## Getting Started
+
+To get started, you can either download the extension from the [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=iantoujou.42-companion) or download one of the [Releases](https://github.com/IanToujou/42-Companion-VS-Code/releases).
+
+## Features
+
+### Norminette Intellisense
+
+Norminette intellisense helps you find norm errors in your code. It will highlight the errors for .c and .h files.
+
+## Support
+
+Please make sure to have read the documentation regarding your issue.
+If, however, you do have an issue or any question, you can always reach me via any linked social media account [on my profile](https://github.com/IanToujou).
+
+You can also open an issue on the GitHub repository.
