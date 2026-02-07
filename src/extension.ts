@@ -12,6 +12,7 @@ let checkInterval: NodeJS.Timeout | undefined;
 let extensionPath: string;
 let normDictionary: NormDictionary;
 let fallback: boolean;
+let runningChecks: Map<string, Promise<void>> = new Map();
 
 export function activate(context: vscode.ExtensionContext) {
 
@@ -38,14 +39,8 @@ export function activate(context: vscode.ExtensionContext) {
         })
     );
 
-    checkInterval = setInterval(() => {
-        const editor = vscode.window.activeTextEditor;
-        if (editor) {
-            checkDocument(editor.document, diagnosticCollection).then();
-        }
-    }, 3000);
-
     vscode.workspace.textDocuments.forEach(doc => checkDocument(doc, diagnosticCollection));
+
 }
 
 async function checkDocument(document: vscode.TextDocument, collection: vscode.DiagnosticCollection) {
@@ -57,25 +52,39 @@ async function checkDocument(document: vscode.TextDocument, collection: vscode.D
         return;
     }
 
-    let cmd: string = `norminette ${document.uri.fsPath}`;
-    if (fallback) {
-        cmd = `host-spawn norminette ${document.uri.fsPath}`;
+    const fileKey = document.uri.fsPath;
+
+    // If a check is already running for this file, wait for it to complete
+    if (runningChecks.has(fileKey)) {
+        return runningChecks.get(fileKey);
     }
 
-    try {
-        const { stdout, stderr } = await execAsync(cmd);
-        const diagnostics = parseNorminette(stdout + stderr, document);
-        collection.set(document.uri, diagnostics);
-    } catch (error: any) {
-        console.log(error);
-        if (!fallback && error.stderr.includes('norminette: command not found')) {
-            fallback = true;
+    const checkPromise = (async () => {
+        let cmd: string = `norminette ${document.uri.fsPath}`;
+        if (fallback) {
+            cmd = `host-spawn norminette ${document.uri.fsPath}`;
         }
-        if (error.stdout) {
-            const diagnostics = parseNorminette(error.stdout, document);
+
+        try {
+            const { stdout, stderr } = await execAsync(cmd);
+            const diagnostics = parseNorminette(stdout + stderr, document);
             collection.set(document.uri, diagnostics);
+        } catch (error: any) {
+            console.log(error);
+            if (!fallback && error.stderr.includes('norminette: command not found')) {
+                fallback = true;
+            }
+            if (error.stdout) {
+                const diagnostics = parseNorminette(error.stdout, document);
+                collection.set(document.uri, diagnostics);
+            }
+        } finally {
+            runningChecks.delete(fileKey);
         }
-    }
+    })();
+
+    runningChecks.set(fileKey, checkPromise);
+    return checkPromise;
 }
 
 function parseNorminette(output: string, document: vscode.TextDocument): vscode.Diagnostic[] {
