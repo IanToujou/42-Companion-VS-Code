@@ -3,6 +3,9 @@
 [![Release](https://img.shields.io/badge/-Release_1.0.0-blue?logo=github)](https://github.com/IanToujou/42-Companion-VS-Code)
 [![Support](https://img.shields.io/badge/-Support-teal?logo=github)](https://github.com/IanToujou/42-Companion-VS-Code)
 
+
+<img width="2560" height="512" alt="Banner" src="https://github.com/user-attachments/assets/9ffd8ed6-41f0-4476-ba6c-5370cf8f77d1" />
+
 42 Companion is a Visual Studio Code extension that helps you manage your 42 projects. It supports intellisense and fixes for Norminette, Makefiles, headers and more!
 
 ## Getting Started
