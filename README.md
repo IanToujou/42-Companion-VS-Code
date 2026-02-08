@@ -7,13 +7,18 @@
 
 ## Getting Started
 
-To get started, you can either download the extension from the [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=iantoujou.42-companion) or download one of the [Releases](https://github.com/IanToujou/42-Companion-VS-Code/releases).
+To get started, you can either download the extension from the [VS Code Marketplace](https://marketplace.visualstudio.com/vscode) or download one of the [Releases](https://github.com/IanToujou/42-Companion-VS-Code/releases).
 
 ## Features
 
 ### Norminette Intellisense
 
 Norminette intellisense helps you find norm errors in your code. It will highlight the errors for .c and .h files.
+
+### Makefile Support
+
+Makefiles are not flagged by Norminette, but they are defined in the norm. This extension will help you find errors
+in the makefile, and potential issues.
 
 ## Support
 
