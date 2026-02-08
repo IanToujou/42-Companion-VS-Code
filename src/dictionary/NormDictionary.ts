@@ -672,6 +672,14 @@ export default function defaultDictionary(): NormDictionary {
                     start: 0,
                     end: 1
                 }
+            },
+            {
+                severity: NormSeverity.Error,
+                errorCode: "CHAR_AS_STRING",
+                errorMessage: "A character should only contain one single character.",
+                range: {
+                    type: NormRangeType.LINE
+                }
             }
         ]
     };
