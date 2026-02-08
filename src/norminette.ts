@@ -32,7 +32,7 @@ export async function handleNorminette(document: vscode.TextDocument, collection
         }
 
         try {
-            const { stdout, stderr } = await execAsync(cmd);
+            const { stdout, stderr } = await execAsync(cmd, { timeout: 5000 });
             const diagnostics = parseNorminette(stdout + stderr, document);
             collection.set(document.uri, diagnostics);
         } catch (error: any) {
