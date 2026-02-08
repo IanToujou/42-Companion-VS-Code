@@ -5,7 +5,7 @@ All notable changes, including bugfixes, can be found here.
 ## Release v1.1.1
 
 - Fixed image in readme.
-- Fixed bug where system libraries were getting indexed.
+- Fixed a bug where system libraries were getting indexed.
 - Added timeout to norminette.
 
 ## Release v1.1.0
