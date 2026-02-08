@@ -2,6 +2,10 @@
 
 All notable changes, including bugfixes, can be found here.
 
+## Release v1.1.0
+
+- Added error highlighting for makefiles.
+
 ## Release v1.0.1
 
 - Added support for Visual Studio Code as a flatpak.
