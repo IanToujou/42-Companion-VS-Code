@@ -19,11 +19,22 @@ function parseMakefile(document: vscode.TextDocument): vscode.Diagnostic[] {
     const text = document.getText();
     const lines = text.split('\n');
 
+    const requiredRules = ['all', 'clean', 'fclean', 're', '$(NAME)'];
+    const foundRules = new Set<string>();
+
     for (let i = 0; i < lines.length; i++) {
 
         const line = lines[i];
         if (line.startsWith('#') || line.length === 0) {
             continue;
+        }
+
+        const ruleMatch = line.match(/^([^\s:]+):/);
+        if (ruleMatch) {
+            const ruleName = ruleMatch[1];
+            if (requiredRules.includes(ruleName)) {
+                foundRules.add(ruleName);
+            }
         }
 
         for (const entry of dictionary.data) {
@@ -56,6 +67,17 @@ function parseMakefile(document: vscode.TextDocument): vscode.Diagnostic[] {
             }
         }
 
+    }
+
+    const missingRules = requiredRules.filter(rule => !foundRules.has(rule));
+    if (missingRules.length > 0) {
+        const diagnostic = new vscode.Diagnostic(
+            new vscode.Range(0, 0, 0, 0),
+            `Missing required rule${missingRules.length > 1 ? 's' : ''}: ${missingRules.join(', ')}`,
+            vscode.DiagnosticSeverity.Error
+        );
+        diagnostic.source = '42 Companion: Makefile';
+        diagnostics.push(diagnostic);
     }
 
     return diagnostics;
