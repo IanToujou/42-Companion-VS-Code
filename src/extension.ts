@@ -32,6 +32,11 @@ export function activate(context: vscode.ExtensionContext) {
 
 async function handleDocument(document: vscode.TextDocument, collection: vscode.DiagnosticCollection) {
 
+    const workspaceFolder = vscode.workspace.getWorkspaceFolder(document.uri);
+    if (!workspaceFolder) {
+        return;
+    }
+
     if (document.fileName.endsWith('.c') || document.fileName.endsWith('.h')) {
         handleNorminette(document, collection).then();
     }
