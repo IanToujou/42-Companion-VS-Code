@@ -5,6 +5,10 @@ All notable changes, including bugfixes, can be found here.
 ## Release v1.1.0
 
 - Added error highlighting for makefiles.
+- Added "char as string" norm error.
+- Added "empty character" norm error.
+- Added "space expected after control structure" norm error.
+- Fixed links inside the README.
 
 ## Release v1.0.1
 

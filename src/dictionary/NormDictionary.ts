@@ -680,6 +680,36 @@ export default function defaultDictionary(): NormDictionary {
                 range: {
                     type: NormRangeType.LINE
                 }
+            },
+            {
+                severity: NormSeverity.Error,
+                errorCode: "ASSIGN_IN_CONTROL",
+                errorMessage: "You cannot assign a value inside a control structure.",
+                range: {
+                    type: NormRangeType.NUMERIC,
+                    start: 0,
+                    end: 1
+                }
+            },
+            {
+                severity: NormSeverity.Error,
+                errorCode: "EXP_NEWLINE",
+                errorMessage: "A new line is required after a control structure.",
+                range: {
+                    type: NormRangeType.NUMERIC,
+                    start: 0,
+                    end: 1
+                }
+            },
+            {
+                severity: NormSeverity.Error,
+                errorCode: "EMPTY_CHAR",
+                errorMessage: "Character constants cannot be empty.",
+                range: {
+                    type: NormRangeType.NUMERIC,
+                    start: 0,
+                    end: 2
+                }
             }
         ]
     };
