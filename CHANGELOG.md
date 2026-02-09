@@ -2,6 +2,10 @@
 
 All notable changes, including bugfixes, can be found here.
 
+## Release v1.2.1
+
+- Added support for Visual Studio Code 1.101.x and above
+
 ## Release v1.2.0
 
 - Added automatic header insertion for .c and .h files.
