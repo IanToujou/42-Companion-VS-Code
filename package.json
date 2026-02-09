@@ -8,7 +8,7 @@
   "pricing": "Free",
   "icon": "images/icon.png",
   "engines": {
-    "vscode": "^1.107.1"
+    "vscode": "^1.103.0"
   },
   "categories": [
     "Formatters",
@@ -21,7 +21,22 @@
   ],
   "main": "./out/extension.js",
   "contributes": {
-    "commands": []
+    "commands": [],
+    "configuration": {
+      "title": "42 Companion",
+      "properties": {
+        "42-companion.header.username": {
+          "type": "string",
+          "default": "marvin",
+          "description": "Username for 42 header"
+        },
+        "42-companion.header.email": {
+          "type": "string",
+          "default": "student.42.fr",
+          "description": "Email for 42 header"
+        }
+      }
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",
@@ -32,7 +47,7 @@
     "test": "vscode-test"
   },
   "devDependencies": {
-    "@types/vscode": "^1.107.1",
+    "@types/vscode": "^1.103.0",
     "@types/mocha": "^10.0.10",
     "@types/node": "22.x",
     "typescript-eslint": "^8.52.0",

@@ -1,6 +1,9 @@
 import * as vscode from 'vscode';
 import {handleNorminette, initNorminette} from "./norminette";
 import {handleMakefile, initMakefile} from "./makefile";
+import {handleHeader} from "./header";
+
+const processingDocuments = new Set<string>();
 
 export function activate(context: vscode.ExtensionContext) {
 
@@ -37,8 +40,22 @@ async function handleDocument(document: vscode.TextDocument, collection: vscode.
         return;
     }
 
+    const docKey = document.uri.toString();
+
     if (document.fileName.endsWith('.c') || document.fileName.endsWith('.h')) {
-        handleNorminette(document, collection).then();
+        if (processingDocuments.has(docKey)) {
+            return;
+        }
+        processingDocuments.add(docKey);
+        try {
+            const modified = await handleHeader(document);
+            if (modified) {
+                await document.save();
+            }
+            await handleNorminette(document, collection);
+        } finally {
+            processingDocuments.delete(docKey);
+        }
     }
 
     const fileName = document.fileName.split('/').pop()?.toLowerCase();
