@@ -15,6 +15,10 @@ To get started, you can either download the extension from the [VS Code Marketpl
 
 Norminette intellisense helps you find norm errors in your code. It will highlight the errors for .c and .h files.
 
+### Header Insertion
+
+Configurable 42 headers are available and fill automatically be added to .c and .h files.
+
 ### Makefile Support
 
 Makefiles are not flagged by Norminette, but they are defined in the norm. This extension will help you find errors
