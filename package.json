@@ -21,7 +21,12 @@
   ],
   "main": "./out/extension.js",
   "contributes": {
-    "commands": [],
+    "commands": [
+      {
+        "command": "42-companion.openHeaderSettings",
+        "title": "42 Companion: Open Header Settings"
+      }
+    ],
     "configuration": {
       "title": "42 Companion",
       "properties": {

@@ -10,6 +10,12 @@ export function activate(context: vscode.ExtensionContext) {
     initNorminette();
     initMakefile();
 
+    context.subscriptions.push(
+        vscode.commands.registerCommand('42-companion.openHeaderSettings', () => {
+            vscode.commands.executeCommand('workbench.action.openSettings', '@ext:toujoustudios.42-companion header').then();
+        })
+    );
+
     const diagnosticCollection = vscode.languages.createDiagnosticCollection('norminette');
     context.subscriptions.push(diagnosticCollection);
 
